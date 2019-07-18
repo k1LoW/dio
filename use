@@ -1,0 +1,48 @@
+#!/bin/sh
+# Usege:
+#
+#   source <(curl https://raw.githubusercontent.com/k1LoW/dio/master/use)
+#
+# Reference:
+#   https://github.com/goreleaser/get
+DIO_GOOS=linux
+DIO_EXT=tar.gz
+DIO_ARCH=amd64
+if test $(uname -s) = "Darwin"
+then
+  DIO_GOOS=darwin
+  DIO_EXT=zip
+fi
+DIO_ARCHIVE="/tmp/dio.${DIO_EXT}"
+
+DIO_RELEASES_URL="https://github.com/k1LoW/dio/releases"
+test -z "$DIO_TMPDIR" && DIO_TMPDIR="$(mktemp -d)"
+
+last_version() {
+  curl -sL -o /dev/null -w %{url_effective} "$DIO_RELEASES_URL/latest" |
+    rev |
+    cut -f1 -d'/'|
+    rev
+}
+
+download() {
+  test -z "$DIO_VERSION" && DIO_VERSION="$(last_version)"
+  test -z "$DIO_VERSION" && {
+    echo "Unable to get dio version." >&2
+    exit 1
+  }
+  rm -f "$DIO_ARCHIVE"
+  curl -s -L -o "$DIO_ARCHIVE" \
+    "${DIO_RELEASES_URL}/download/${DIO_VERSION}/dio_${DIO_VERSION}_${DIO_GOOS}_${DIO_ARCH}.${DIO_EXT}"
+}
+
+download
+if test ${DIO_EXT} = "tar.gz"
+then
+  tar -xf "$DIO_ARCHIVE" -C "$DIO_TMPDIR"
+elif test ${DIO_EXT} = "zip"
+then
+  unzip -qo "$DIO_ARCHIVE" -d "$DIO_TMPDIR"
+fi
+export PATH=${DIO_TMPDIR}:$PATH
+echo -e '\e[36mYou can use `dio` command in this session.\e[m'
