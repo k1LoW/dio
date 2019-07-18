@@ -1,6 +1,6 @@
 # dio
 
-Reader/Writer using Direct I/O.
+Read/Write command using Direct I/O.
 
 ## Usage
 

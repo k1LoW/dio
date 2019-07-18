@@ -31,8 +31,8 @@ import (
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "dio",
-	Short: "Reader/Writer using Direct I/O",
-	Long:  `Reader/Writer using Direct I/O.`,
+	Short: "Read/Write command using Direct I/O",
+	Long:  `Read/Write command using Direct I/O.`,
 }
 
 func Execute() {
