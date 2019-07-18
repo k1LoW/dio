@@ -34,7 +34,7 @@ Download binany from [releases page](https://github.com/k1LoW/dio/releases)
 $ go get github.com/k1LoW/dio
 ```
 
-## Temporary Install
+## Use Temporary
 
 ``` console
 $ source <(curl https://raw.githubusercontent.com/k1LoW/dio/master/use)
